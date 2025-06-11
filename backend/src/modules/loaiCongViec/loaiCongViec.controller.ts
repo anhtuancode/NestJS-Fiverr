@@ -1,5 +1,5 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { LoaiCongViecService } from './loai-cong-viec.service';
+import { LoaiCongViecService } from './loaiCongViec.service';
 import { CreateLoaiCongViecDto } from './dto/createLoaiCongViec.dto';
 
 @Controller('loai-cong-viec')

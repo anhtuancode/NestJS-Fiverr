@@ -16,6 +16,7 @@ import {
   REFRESH_TOKEN_SECRET,
 } from 'src/common/constant/app.constant';
 import { JwtService } from '@nestjs/jwt';
+import { Public } from 'src/common/decorator/public.decorator';
 
 @Injectable()
 export class AuthService {
@@ -51,6 +52,7 @@ export class AuthService {
 
     return userToken;
   }
+
 
   async signup(signupDtoAuth: SignupAuthDto) {
     const { name, email, password, confirm_password } = signupDtoAuth;
@@ -134,6 +136,7 @@ export class AuthService {
       secret: ACCESS_TOKEN_SECRET,
       ignoreExpiration: true,
     });
+
 
     if (decodeAccessToken.userId !== decodeRefreshToken.userId)
       throw new UnauthorizedException("Token isnt suitable");

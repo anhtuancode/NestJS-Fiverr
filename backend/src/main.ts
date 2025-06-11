@@ -1,8 +1,11 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { PORT } from './common/constant/app.constant';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ProtectGuard } from './modules/auth/protect/protect.guard';
+import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
+import { ResponseSuccessInterceptor } from './common/interceptor/response-success.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +20,11 @@ async function bootstrap() {
     }),
   ); // Chỉ nhận các trường có trong DTO
 
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(new ProtectGuard(reflector));
+  app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(new ResponseSuccessInterceptor());
+
 
   const config = new DocumentBuilder()
     .setTitle('NestJs Fiverr')
@@ -25,7 +33,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/api-docs', app, documentFactory, {
+  SwaggerModule.setup('swagger', app, documentFactory, {
     swaggerOptions: {
       persistAuthorization: true,
     },

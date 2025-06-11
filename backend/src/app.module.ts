@@ -5,12 +5,14 @@ import { AuthModule } from './modules/auth/auth.module';
 import { TokenModule } from './modules/token/token.module';
 import { ProtectStrategy } from './modules/auth/protect/protect.strategy';
 import { PrismaService } from './prisma/prisma.service';
-import { BinhLuanModule } from './modules/binh-luan/binh-luan.module';
-import { CongViecModule } from './modules/cong-viec/cong-viec.module';
-import { LoaiCongViecModule } from './modules/loai-cong-viec/loai-cong-viec.module';
+import { BinhLuanModule } from './modules/binhLuan/binhLuan.module';
+import { CongViecModule } from './modules/congViec/congViec.module';
+import { LoaiCongViecModule } from './modules/loaiCongViec/loaiCongViec.module';
+import { ChiTietLoaiCongViecModule } from './modules/chiTietLoaiCongViec/chiTietLoaiCongViec.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
-  imports: [AuthModule, TokenModule, BinhLuanModule, CongViecModule, LoaiCongViecModule],
+  imports: [AuthModule, TokenModule, BinhLuanModule, CongViecModule, LoaiCongViecModule, ChiTietLoaiCongViecModule, UsersModule],
   controllers: [AppController],
   providers: [AppService, ProtectStrategy, PrismaService],
 })

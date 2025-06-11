@@ -11,7 +11,7 @@ export class LoaiCongViecService {
 
         const result = this.prismaService.loaiCongViec.create({data: {ten_loai_cong_viec}})
 
-        if(!result) throw new BadRequestException('Create type job failed. Please check your information again');
+        if(!result) throw new BadRequestException('Create failed. Please check your information again');
 
 
         return result;

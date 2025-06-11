@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class CreateJobDto {
+export class CongViecViewDto {
     @ApiProperty({
         default: 'Thiết kế website'
     })

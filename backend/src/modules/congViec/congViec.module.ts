@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CongViecService } from './cong-viec.service';
-import { CongViecController } from './cong-viec.controller';
+import { CongViecService } from './congViec.service';
+import { CongViecController } from './congViec.controller';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({

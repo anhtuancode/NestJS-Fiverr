@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { BinhLuanService } from './binh-luan.service';
-import { BinhLuanController } from './binh-luan.controller';
+import { BinhLuanService } from './binhLuan.service';
+import { BinhLuanController } from './binhLuan.controller';
 
 @Module({
   controllers: [BinhLuanController],
