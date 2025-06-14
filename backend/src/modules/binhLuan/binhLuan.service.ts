@@ -32,6 +32,7 @@ export class BinhLuanService {
     const result = await this.prismaService.binhLuan.findMany();
 
     if (!result) throw new BadRequestException('Comment not found');
+    
 
     return result;
   }

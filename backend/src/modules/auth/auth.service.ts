@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Injectable,
   UnauthorizedException,
-  UseGuards,
 } from '@nestjs/common';
 import { SigninAuthDto } from './dto/signin-auth.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -73,8 +72,6 @@ export class AuthService {
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
-
-    console.log(hashPassword);
 
     const newUser = await this.prismaService.nguoiDung.create({
       data: {

@@ -10,9 +10,11 @@ import { CongViecModule } from './modules/congViec/congViec.module';
 import { LoaiCongViecModule } from './modules/loaiCongViec/loaiCongViec.module';
 import { ChiTietLoaiCongViecModule } from './modules/chiTietLoaiCongViec/chiTietLoaiCongViec.module';
 import { UsersModule } from './modules/users/users.module';
+import { SkillModule } from './modules/skill/skill.module';
+import { ThueCongViecModule } from './modules/thueCongViec/thueCongViec.module';
 
 @Module({
-  imports: [AuthModule, TokenModule, BinhLuanModule, CongViecModule, LoaiCongViecModule, ChiTietLoaiCongViecModule, UsersModule],
+  imports: [AuthModule, TokenModule, BinhLuanModule, CongViecModule, LoaiCongViecModule, ChiTietLoaiCongViecModule, UsersModule, SkillModule, ThueCongViecModule],
   controllers: [AppController],
   providers: [AppService, ProtectStrategy, PrismaService],
 })
