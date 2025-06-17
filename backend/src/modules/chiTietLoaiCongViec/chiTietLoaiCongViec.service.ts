@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateChiTietLoaiCongViecDto } from './dto/CreateChiTietLoaiCongViec.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateChiTietLoaiCongViecDto } from './dto/updateChiTietLoaiCongViec.dto';
+import { CreateChiTietLoaiCongViecDto } from './dto/createChiTietLoaiCongViec.dto';
 
 @Injectable()
 export class ChiTietLoaiCongViecService {
@@ -97,5 +97,61 @@ export class ChiTietLoaiCongViecService {
     if (!result) throw new BadRequestException('Delete failed');
 
     return result;
+  }
+
+  async findByLoaiCongViecId(page: number, pageSize: number, keyword: string) {
+    page = Number(page);
+    page = page > 0 ? page : 1;
+    pageSize = Number(pageSize);
+    pageSize = pageSize > 0 ? pageSize : 10;
+    keyword = keyword ? keyword.trim() : '';
+
+    const skip = (page - 1) * pageSize;
+
+    const result = await this.prismaService.loaiCongViec.findMany({
+      include: {
+        ChiTietLoaiCongViec: {
+          where: {
+            ten_chi_tiet: { contains: keyword },
+            isDeleted: false,
+          },
+          select: {
+            id: true,
+            ten_chi_tiet: true,
+            hinh_anh: true,
+          },
+        },
+      },
+    });
+
+    if (!result) throw new BadRequestException('Job not found');
+
+    const filtered = result.filter(
+      (lcv) => lcv.ChiTietLoaiCongViec.length > 0,
+    );
+
+    // B3: Phân trang theo nhóm
+    const totalItem = filtered.length;
+    const totalPage = Math.ceil(totalItem / pageSize);
+    const paginated = filtered.slice(skip, skip + pageSize);
+
+    // B4: Format dữ liệu
+    const formatted = paginated.map((item) => ({
+      id: item.id,
+      tenNhom: item.ten_loai_cong_viec,
+      maLoai: item.id,
+      dsChiTietLoai: item.ChiTietLoaiCongViec.map((ct) => ({
+        id: ct.id,
+        tenChiTiet: ct.ten_chi_tiet,
+      })),
+    }));
+
+    return {
+      page,
+      pageSize,
+      totalItem,
+      totalPage,
+      data: formatted,
+    };
   }
 }

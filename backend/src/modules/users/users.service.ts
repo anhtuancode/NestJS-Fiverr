@@ -263,7 +263,7 @@ export class UsersService {
         id: userId,
       },
       data: {
-        avatar: result.public_id,
+        avatar: result.secure_url,
       },
     });
 

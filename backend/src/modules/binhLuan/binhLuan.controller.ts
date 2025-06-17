@@ -28,8 +28,8 @@ export class BinhLuanController {
     return await this.binhLuanService.delete(id);
   }
 
-  @Get('lay-binh-luan-theo-cong-viec/:id')
-  async FindAllFromID(@Param('id') id: number) {
+  @Get('lay-binh-luan-theo-cong-viec/:maCongViec')
+  async FindAllFromID(@Param('maCongViec') id: number) {
     return await this.binhLuanService.FindAllFromID(id);
   }
 }

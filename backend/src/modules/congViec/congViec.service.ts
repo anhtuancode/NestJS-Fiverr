@@ -7,6 +7,8 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateCongViecDto } from './dto/CreateCongViec.dto';
 import { UpdateCongViecDto } from './dto/UpdateCongViec.dto';
+import { uploadImage } from 'src/common/multer/cloud.result';
+import { v2 as cloudinary } from 'cloudinary';
 
 @Injectable()
 export class CongViecService {
@@ -164,7 +166,7 @@ export class CongViecService {
 
     const skip = (page - 1) * pageSize;
 
-    const where = {ten_cong_viec: { contains: keyword }, isDeleted: false};
+    const where = { ten_cong_viec: { contains: keyword }, isDeleted: false };
 
     const result = await this.prismaService.congViec.findMany({
       where: where,
@@ -175,13 +177,13 @@ export class CongViecService {
       },
     });
 
-    if(!result) throw new BadRequestException('Job not found');
+    if (!result) throw new BadRequestException('Job not found');
 
     const totalItem = await this.prismaService.congViec.count({
       where: where,
     });
 
-    const totalPage = Math.ceil(totalItem / pageSize);  
+    const totalPage = Math.ceil(totalItem / pageSize);
 
     return {
       page: page,
@@ -193,8 +195,240 @@ export class CongViecService {
   }
 
   async layMenuLoaiCongViec() {
-    
+    const loaiCongViec = await this.prismaService.loaiCongViec.findMany({
+      include: {
+        ChiTietLoaiCongViec: {
+          include: {
+            CongViec: {
+              where: {
+                isDeleted: false,
+              },
+            },
+          },
+        },
+      },
+    });
 
-    return "ok";
+    if (!loaiCongViec) throw new BadRequestException('Get all data failed');
+
+    return loaiCongViec.map((loai) => ({
+      id: loai.id,
+      tenLoaiCongViec: loai.ten_loai_cong_viec,
+      dsNhomChiTietLoai: loai.ChiTietLoaiCongViec.map((nhom) => ({
+        id: nhom.id,
+        tenNhom: nhom.ten_chi_tiet,
+        hinhAnh: nhom.hinh_anh,
+        maLoaiCongviec: nhom.ma_loai_cong_viec,
+        dsChiTietLoai: nhom.CongViec.map((cv) => ({
+          id: cv.id,
+          tenChiTiet: cv.ten_cong_viec,
+        })),
+      })),
+    }));
+  }
+
+  async layMenuLoaiCongViecbyId(id: number) {
+    const typeId = Number(id);
+
+    const result = await this.prismaService.loaiCongViec.findUnique({
+      where: {
+        id: typeId,
+      },
+      include: {
+        ChiTietLoaiCongViec: {
+          include: {
+            CongViec: {
+              where: {
+                isDeleted: false,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!result) throw new BadRequestException('Get all data failed');
+
+    return {
+      id: result.id,
+      tenLoaiCongViec: result.ten_loai_cong_viec,
+      dsNhomChiTietLoai: result.ChiTietLoaiCongViec.map((nhom) => ({
+        id: nhom.id,
+        tenNhom: nhom.ten_chi_tiet,
+        hinhAnh: nhom.hinh_anh,
+        maLoaiCongviec: nhom.ma_loai_cong_viec,
+        dsChiTietLoai: nhom.CongViec.map((cv) => ({
+          id: cv.id,
+          tenChiTiet: cv.ten_cong_viec,
+        })),
+      })),
+    };
+  }
+
+  async layTheoChiTietLoai(id: number) {
+    const typeId = Number(id);
+
+    const result = await this.prismaService.congViec.findMany({
+      where: {
+        ma_chi_tiet_loai: typeId,
+        isDeleted: false,
+      },
+      include: {
+        ChiTietLoaiCongViec: {
+          include: {
+            LoaiCongViec: true,
+          },
+        },
+        NguoiDung: true,
+      },
+    });
+
+    if (!result) throw new BadRequestException('Get all data failed');
+
+    const data = result.map((cv) => ({
+      id: cv.id,
+      congViec: {
+        id: cv.id,
+        tenCongViec: cv.ten_cong_viec,
+        danhGia: cv.danh_gia,
+        giaTien: cv.gia_tien,
+        nguoiTao: cv.nguoi_tao,
+        hinhAnh: cv.hinh_anh,
+        moTa: cv.mo_ta,
+        maChiTietLoaiCongViec: cv.ma_chi_tiet_loai,
+        moTaNgan: cv.mo_ta_ngan,
+        saoCongViec: cv.sao_cong_viec,
+      },
+      tenLoaiCongViec:
+        cv.ChiTietLoaiCongViec?.LoaiCongViec?.ten_loai_cong_viec || '',
+      tenNhomChiTietLoai: cv.ChiTietLoaiCongViec?.ten_chi_tiet || '',
+      tenChiTietLoai: cv.ChiTietLoaiCongViec?.ten_chi_tiet || '',
+      tenNguoiTao: cv.NguoiDung?.name || 'Không rõ',
+      avatar: cv.NguoiDung?.avatar || null,
+    }));
+
+    return data;
+  }
+
+  async layCongViecChiTiet(id: number) {
+    const typeId = Number(id);
+
+    const result = await this.prismaService.congViec.findMany({
+      where: {
+        id: typeId,
+        isDeleted: false,
+      },
+      include: {
+        ChiTietLoaiCongViec: {
+          include: {
+            LoaiCongViec: true,
+          },
+        },
+        NguoiDung: true,
+      },
+    });
+
+    if (!result) throw new BadRequestException('Get all data failed');
+
+    const data = result.map((cv) => ({
+      id: cv.id,
+      congViec: {
+        id: cv.id,
+        tenCongViec: cv.ten_cong_viec,
+        danhGia: cv.danh_gia,
+        giaTien: cv.gia_tien,
+        nguoiTao: cv.nguoi_tao,
+        hinhAnh: cv.hinh_anh,
+        moTa: cv.mo_ta,
+        maChiTietLoaiCongViec: cv.ma_chi_tiet_loai,
+        moTaNgan: cv.mo_ta_ngan,
+        saoCongViec: cv.sao_cong_viec,
+      },
+      tenLoaiCongViec:
+        cv.ChiTietLoaiCongViec?.LoaiCongViec?.ten_loai_cong_viec || '',
+      tenNhomChiTietLoai: cv.ChiTietLoaiCongViec?.ten_chi_tiet || '',
+      tenChiTietLoai: cv.ChiTietLoaiCongViec?.ten_chi_tiet || '',
+      tenNguoiTao: cv.NguoiDung?.name || 'Không rõ',
+      avatar: cv.NguoiDung?.avatar || null,
+    }));
+
+    return data;
+  }
+
+  async layDanhSachTheoTenCongViec(tenCongViec: string) {
+    const result = await this.prismaService.congViec.findMany({
+      where: {
+        ten_cong_viec: tenCongViec,
+        isDeleted: false,
+      },
+      include: {
+        ChiTietLoaiCongViec: {
+          include: {
+            LoaiCongViec: true,
+          },
+        },
+        NguoiDung: true,
+      },
+    });
+
+    if (!result) throw new BadRequestException('Get all data failed');
+
+    const data = result.map((cv) => ({
+      id: cv.id,
+      congViec: {
+        id: cv.id,
+        tenCongViec: cv.ten_cong_viec,
+        danhGia: cv.danh_gia,
+        giaTien: cv.gia_tien,
+        nguoiTao: cv.nguoi_tao,
+        hinhAnh: cv.hinh_anh,
+        moTa: cv.mo_ta,
+        maChiTietLoaiCongViec: cv.ma_chi_tiet_loai,
+        moTaNgan: cv.mo_ta_ngan,
+        saoCongViec: cv.sao_cong_viec,
+      },
+      tenLoaiCongViec:
+        cv.ChiTietLoaiCongViec?.LoaiCongViec?.ten_loai_cong_viec || '',
+      tenNhomChiTietLoai: cv.ChiTietLoaiCongViec?.ten_chi_tiet || '',
+      tenChiTietLoai: cv.ChiTietLoaiCongViec?.ten_chi_tiet || '',
+      tenNguoiTao: cv.NguoiDung?.name || 'Không rõ',
+      avatar: cv.NguoiDung?.avatar || null,
+    }));
+
+    return data;
+  }
+
+  async uploadImage(file: Express.Multer.File, id: number) {
+    const typeId = Number(id);
+
+    if (!file) throw new Error('No file uploaded');
+
+    const result = await this.prismaService.congViec.findUnique({
+      where: {
+        id: typeId,
+      },
+    });
+    if (!result) throw new BadRequestException('Get all data failed');
+
+    if (result?.hinh_anh) {
+      await cloudinary.uploader.destroy(result.hinh_anh);
+    }
+
+    const fileUpload = await uploadImage(file.buffer);
+
+
+    await this.prismaService.congViec.update({
+      where: {
+        id: typeId,
+      },
+      data: {
+        hinh_anh: fileUpload.secure_url,
+      },
+    });
+    return {
+      folder: fileUpload.asset_folder,
+      filename: file.originalname,
+      imgUrl: fileUpload.secure_url,
+    };
   }
 }

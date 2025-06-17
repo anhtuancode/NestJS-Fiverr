@@ -1,5 +1,5 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { CreateChiTietLoaiCongViecDto } from './dto/CreateChiTietLoaiCongViec.dto';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
+import { CreateChiTietLoaiCongViecDto } from './dto/createChiTietLoaiCongViec.dto';
 import { ChiTietLoaiCongViecService } from './chiTietLoaiCongViec.service';
 import { UpdateChiTietLoaiCongViecDto } from './dto/updateChiTietLoaiCongViec.dto';
 
@@ -17,11 +17,6 @@ export class ChiTietLoaiCongViecController {
     return await this.chiTietLoaiCongViecService.findAll();
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return await this.chiTietLoaiCongViecService.findOne(id);
-  }
-
   @Put(':id')
   async update(@Param('id') id: number, @Body() updateChiTietLoaiCongViecDto: UpdateChiTietLoaiCongViecDto) {
     return await this.chiTietLoaiCongViecService.update(id, updateChiTietLoaiCongViecDto);
@@ -31,5 +26,20 @@ export class ChiTietLoaiCongViecController {
   async delete(@Param('id') id: number) {
     return await this.chiTietLoaiCongViecService.delete(id);
   }
+
+  @Get('search')
+  async findByLoaiCongViecId(@Query('page') page: number, @Query('pageSize') pageSize: number, @Query('keyword') keyword: string) {
+    return await this.chiTietLoaiCongViecService.findByLoaiCongViecId(page, pageSize, keyword);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: number) {
+    return await this.chiTietLoaiCongViecService.findOne(id);
+  }
+
+  // @Post('them-nhom-chi-tiet-loai')
+  // async themChiTietLoai(@Body() createChiTietLoaiCongViecDto: CreateChiTietLoaiCongViecDto) {
+    
+  // }
 }
 
