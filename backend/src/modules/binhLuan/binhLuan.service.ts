@@ -37,8 +37,10 @@ export class BinhLuanService {
     return result;
   }
 
-  async update(id: number, updateBinhLuanDto: UpdateBinhLuanDto) {
+  async update(id: number, updateBinhLuanDto: UpdateBinhLuanDto, user: any) {
     const commentId = Number(id);
+    const userId = Number(user.id);
+
     // Chặn sửa
     if ('ma_cong_viec' in updateBinhLuanDto) {
       throw new BadRequestException('Không được phép thay đổi!');
@@ -54,11 +56,26 @@ export class BinhLuanService {
       ),
     );
 
-    const result = await this.prismaService.binhLuan.update({
+    const data = await this.prismaService.binhLuan.findUnique({
       where: {
         id: commentId,
       },
-      data: fieldsToUpdate,
+    });
+
+    console.log(data);
+
+    if(!data) throw new BadRequestException('Comment not found');
+
+    if(data.ma_nguoi_binh_luan !== userId) throw new BadRequestException('You dont have permission to update this comment');
+
+    const result = await this.prismaService.binhLuan.update({
+      where: {
+        id: commentId,
+        ma_nguoi_binh_luan: userId,
+      },
+      data: {
+        ...fieldsToUpdate,
+      },
     });
 
     if (!result) throw new BadRequestException('Update Comment fail');
@@ -66,12 +83,24 @@ export class BinhLuanService {
     return result;
   }
 
-  async delete(id: number) {
+  async delete(id: number, user: any) {
     const commentId = Number(id);
+    const userId = Number(user.id);
+
+    const data = await this.prismaService.binhLuan.findUnique({
+      where: {
+        id: commentId,
+      },
+    });
+
+    if(!data) throw new BadRequestException('Comment not found');
+
+    if(data.ma_nguoi_binh_luan !== userId) throw new BadRequestException('You dont have permission to delete this comment');
 
     const result = await this.prismaService.binhLuan.update({
       where: {
         id: commentId,
+        ma_nguoi_binh_luan: userId,
       },
       data: {
         isDeleted: true,

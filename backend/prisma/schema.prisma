@@ -27,17 +27,19 @@ model BinhLuan {
 }
 
 model ChiTietLoaiCongViec {
-  id                Int           @id @default(autoincrement())
-  ten_chi_tiet      String?       @db.VarChar(255)
-  hinh_anh          String?       @db.VarChar(255)
-  ma_loai_cong_viec Int?
-  deletedBy         Int           @default(0)
-  isDeleted         Boolean       @default(false)
-  deletedAt         DateTime      @default(now()) @db.Timestamp(0)
-  createdAt         DateTime      @default(now()) @db.Timestamp(0)
-  updatedAt         DateTime      @default(now()) @db.Timestamp(0)
-  LoaiCongViec      LoaiCongViec? @relation(fields: [ma_loai_cong_viec], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ChiTietLoaiCongViec_ibfk_1")
-  CongViec          CongViec[]
+  id                 Int           @id @default(autoincrement())
+  ten_chi_tiet       String?       @db.VarChar(255)
+  hinh_anh           String?       @db.VarChar(255)
+  ma_loai_cong_viec  Int?
+  deletedBy          Int           @default(0)
+  isDeleted          Boolean       @default(false)
+  deletedAt          DateTime      @default(now()) @db.Timestamp(0)
+  createdAt          DateTime      @default(now()) @db.Timestamp(0)
+  updatedAt          DateTime      @default(now()) @db.Timestamp(0)
+  danh_sach_chi_tiet String?       @db.Text
+  createBy           Int           @default(0)
+  LoaiCongViec       LoaiCongViec? @relation(fields: [ma_loai_cong_viec], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ChiTietLoaiCongViec_ibfk_1")
+  CongViec           CongViec[]
 
   @@index([ma_loai_cong_viec], map: "ma_loai_cong_viec")
 }

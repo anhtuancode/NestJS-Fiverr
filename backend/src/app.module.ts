@@ -12,10 +12,11 @@ import { ChiTietLoaiCongViecModule } from './modules/chiTietLoaiCongViec/chiTiet
 import { UsersModule } from './modules/users/users.module';
 import { SkillModule } from './modules/skill/skill.module';
 import { ThueCongViecModule } from './modules/thueCongViec/thueCongViec.module';
+import { PermissionStrategy } from './modules/auth/permission/permission.strategy';
 
 @Module({
   imports: [AuthModule, TokenModule, BinhLuanModule, CongViecModule, LoaiCongViecModule, ChiTietLoaiCongViecModule, UsersModule, SkillModule, ThueCongViecModule],
   controllers: [AppController],
-  providers: [AppService, ProtectStrategy, PrismaService],
+  providers: [AppService, ProtectStrategy, PrismaService, PermissionStrategy],
 })
 export class AppModule {}

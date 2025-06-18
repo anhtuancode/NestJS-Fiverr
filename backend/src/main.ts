@@ -6,6 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ProtectGuard } from './modules/auth/protect/protect.guard';
 import { LoggingInterceptor } from './common/interceptor/logging.interceptor';
 import { ResponseSuccessInterceptor } from './common/interceptor/response-success.interceptor';
+import { PermissionGuard } from './modules/auth/permission/permission.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -22,11 +23,13 @@ async function bootstrap() {
 
   const reflector = app.get(Reflector);
   app.useGlobalGuards(new ProtectGuard(reflector));
+  app.useGlobalGuards(new PermissionGuard(reflector));
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalInterceptors(new ResponseSuccessInterceptor());
 
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('NestJs Fiverr')
     .setDescription('/swagger/v1/api-docs')
     .setVersion('v1')

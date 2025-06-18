@@ -56,6 +56,8 @@ export class AuthService {
   async signup(signupDtoAuth: SignupAuthDto) {
     const { name, email, password, confirm_password } = signupDtoAuth;
 
+    const role = "user";
+
     const userExist = await this.prismaService.nguoiDung.findUnique({
       where: {
         email: email,
@@ -78,6 +80,7 @@ export class AuthService {
         name: name,
         email: email,
         password: hashPassword,
+        role: role,
       },
     });
 

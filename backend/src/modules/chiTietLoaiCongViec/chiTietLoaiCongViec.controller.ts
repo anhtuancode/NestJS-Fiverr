@@ -1,15 +1,40 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query} from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CreateChiTietLoaiCongViecDto } from './dto/createChiTietLoaiCongViec.dto';
 import { ChiTietLoaiCongViecService } from './chiTietLoaiCongViec.service';
 import { UpdateChiTietLoaiCongViecDto } from './dto/updateChiTietLoaiCongViec.dto';
+import { CreateNhomChiTietLoaiCongViecDto } from './dto/createNhomChiTiet.dto';
+import { UploadImageNhomDto } from './dto/uploadImageNhomChiTietLoai.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { Request } from 'express';
+import { SkipPermission } from 'src/common/decorator/skip-permission.decorator';
+import { UpdateNhomChiTietLoaiCongViecDto } from './dto/updateNhomChiTietLoaiCongViec.dto';
 
 @Controller('chi-tiet-loai-cong-viec')
 export class ChiTietLoaiCongViecController {
-  constructor(private readonly chiTietLoaiCongViecService: ChiTietLoaiCongViecService) {}
+  constructor(
+    private readonly chiTietLoaiCongViecService: ChiTietLoaiCongViecService,
+  ) {}
 
   @Post()
-  async create(@Body() createChiTietLoaiCongViecDto: CreateChiTietLoaiCongViecDto) {
-    return await this.chiTietLoaiCongViecService.create(createChiTietLoaiCongViecDto);
+  async create(
+    @Body() createChiTietLoaiCongViecDto: CreateChiTietLoaiCongViecDto,
+  ) {
+    return await this.chiTietLoaiCongViecService.create(
+      createChiTietLoaiCongViecDto,
+    );
   }
 
   @Get()
@@ -17,9 +42,29 @@ export class ChiTietLoaiCongViecController {
     return await this.chiTietLoaiCongViecService.findAll();
   }
 
+  @Put('sua-nhom-chi-tiet-loai/:id')
+  @SkipPermission()
+  async updateNhomChiTietLoai(
+    @Body() updateNhomChiTietLoaiCongViecDto: UpdateNhomChiTietLoaiCongViecDto,
+    @Req() req: Request,
+    @Param('id') id: number,
+  ) {
+    return await this.chiTietLoaiCongViecService.updateNhomChiTietLoai(
+      updateNhomChiTietLoaiCongViecDto,
+      req.user,
+      id,
+    );
+  }
+
   @Put(':id')
-  async update(@Param('id') id: number, @Body() updateChiTietLoaiCongViecDto: UpdateChiTietLoaiCongViecDto) {
-    return await this.chiTietLoaiCongViecService.update(id, updateChiTietLoaiCongViecDto);
+  async update(
+    @Param('id') id: number,
+    @Body() updateChiTietLoaiCongViecDto: UpdateChiTietLoaiCongViecDto,
+  ) {
+    return await this.chiTietLoaiCongViecService.update(
+      id,
+      updateChiTietLoaiCongViecDto,
+    );
   }
 
   @Delete(':id')
@@ -28,8 +73,16 @@ export class ChiTietLoaiCongViecController {
   }
 
   @Get('search')
-  async findByLoaiCongViecId(@Query('page') page: number, @Query('pageSize') pageSize: number, @Query('keyword') keyword: string) {
-    return await this.chiTietLoaiCongViecService.findByLoaiCongViecId(page, pageSize, keyword);
+  async findByLoaiCongViecId(
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+    @Query('keyword') keyword: string,
+  ) {
+    return await this.chiTietLoaiCongViecService.findByLoaiCongViecId(
+      page,
+      pageSize,
+      keyword,
+    );
   }
 
   @Get(':id')
@@ -37,9 +90,35 @@ export class ChiTietLoaiCongViecController {
     return await this.chiTietLoaiCongViecService.findOne(id);
   }
 
-  // @Post('them-nhom-chi-tiet-loai')
-  // async themChiTietLoai(@Body() createChiTietLoaiCongViecDto: CreateChiTietLoaiCongViecDto) {
-    
-  // }
-}
+  @Post('them-nhom-chi-tiet-loai')
+  @SkipPermission()
+  async themNhomChiTietLoai(
+    @Body() createNhomChiTietLoaiCongViecDto: CreateNhomChiTietLoaiCongViecDto,
+    @Req() req: Request,
+  ) {
+    return await this.chiTietLoaiCongViecService.themNhomChiTietLoai(
+      createNhomChiTietLoaiCongViecDto,
+      req.user,
+    );
+  }
 
+  @Post('upload-image-nhom-chi-tiet-loai/:id')
+  @UseInterceptors(FileInterceptor('file'))
+  @ApiConsumes('multipart/form-data')
+  @SkipPermission()
+  @ApiBody({
+    description: 'List of cats',
+    type: UploadImageNhomDto,
+  })
+  async uploadImageNhomChiTietLoai(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id') id: number,
+    @Req() req: Request,
+  ) {
+    return await this.chiTietLoaiCongViecService.uploadImageNhomChiTietLoai(
+      file,
+      id,
+      req.user,
+    );
+  }
+}
