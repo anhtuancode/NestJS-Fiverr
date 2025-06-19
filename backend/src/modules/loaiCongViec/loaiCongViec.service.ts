@@ -6,8 +6,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class LoaiCongViecService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async create(createLoaiCongViecDto: CreateLoaiCongViecDto) {
+  async create(createLoaiCongViecDto: CreateLoaiCongViecDto, user: any) {
     const { ten_loai_cong_viec } = createLoaiCongViecDto;
+    const userId = user.id;
 
     const result = await this.prismaService.loaiCongViec.create({
       data: { ten_loai_cong_viec },

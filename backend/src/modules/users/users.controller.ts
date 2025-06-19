@@ -47,10 +47,9 @@ export class UsersController {
 
   @Get('phan-trang-tim-kiem')
   @Public()
-  @SkipPermission()
-  @ApiQuery({ name: 'page', required: false, type: Number})
-  @ApiQuery({ name: 'pageSize', required: false, type: Number})
-  @ApiQuery({ name: 'keyword', required: false, type: String})
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1})
+  @ApiQuery({ name: 'pageSize', required: false, type: Number, example: 10})
+  @ApiQuery({ name: 'keyword', required: false, type: String, example: 'Nguyễn Văn A'})
   async search(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
@@ -61,7 +60,6 @@ export class UsersController {
 
   @Get(':id')
   @Public()
-  @SkipPermission()
   async findOne(@Param('id') id: number) {
     return await this.usersService.findOne(id);
   }
@@ -79,7 +77,6 @@ export class UsersController {
 
   @Get('search/:name')
   @Public()
-  @SkipPermission()
   async findByName(@Param('name') name: string) {
     return await this.usersService.findAllByName(name);
   }
