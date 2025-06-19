@@ -37,13 +37,24 @@ export class ChiTietLoaiCongViecService {
   }
 
   async findAll() {
-    const result = await this.prismaService.chiTietLoaiCongViec.findMany();
+    const result = await this.prismaService.chiTietLoaiCongViec.findMany({
+      where: {
+        isDeleted: false,
+      },
+    });
 
     if (!result) {
       throw new BadRequestException('Get all data failed');
     }
 
-    return result;
+    const data = result.map((item) => ({
+      id: item.id,
+      ten_chi_tiet: item.ten_chi_tiet,
+      hinh_anh: item.hinh_anh,
+      ma_loai_cong_viec: item.ma_loai_cong_viec,
+    }));
+
+    return data;
   }
 
   async findOne(id: number) {
@@ -51,12 +62,20 @@ export class ChiTietLoaiCongViecService {
     const result = await this.prismaService.chiTietLoaiCongViec.findUnique({
       where: {
         id: jobId,
+        isDeleted: false,
       },
     });
 
     if (!result) throw new BadRequestException('Job not found');
 
-    return result;
+    const data = {
+      id: result.id,
+      ten_chi_tiet: result.ten_chi_tiet,
+      hinh_anh: result.hinh_anh,
+      ma_loai_cong_viec: result.ma_loai_cong_viec,
+    };
+
+    return data;
   }
 
   async update(

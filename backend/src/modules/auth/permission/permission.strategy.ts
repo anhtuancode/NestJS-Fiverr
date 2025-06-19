@@ -18,7 +18,6 @@ export class PermissionStrategy extends PassportStrategy(
   }
 
   async validate(req: any) {
-    console.log(`PermissionStrategy :: validate`);
     const user = req.user;
     const role = user.role;
 
@@ -27,7 +26,7 @@ export class PermissionStrategy extends PassportStrategy(
     }
 
     if (!role || role.trim() === '' || role === 'user') {
-      throw new ForbiddenException('Bạn không có quyền truy cập');
+      throw new ForbiddenException('Bạn không có quyền admin truy cập');
     }
 
     if (role === 'admin') {

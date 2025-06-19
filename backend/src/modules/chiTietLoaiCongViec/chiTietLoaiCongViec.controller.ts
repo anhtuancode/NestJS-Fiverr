@@ -17,10 +17,11 @@ import { UpdateChiTietLoaiCongViecDto } from './dto/updateChiTietLoaiCongViec.dt
 import { CreateNhomChiTietLoaiCongViecDto } from './dto/createNhomChiTiet.dto';
 import { UploadImageNhomDto } from './dto/uploadImageNhomChiTietLoai.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiQuery } from '@nestjs/swagger';
 import { Request } from 'express';
 import { SkipPermission } from 'src/common/decorator/skip-permission.decorator';
 import { UpdateNhomChiTietLoaiCongViecDto } from './dto/updateNhomChiTietLoaiCongViec.dto';
+import { Public } from 'src/common/decorator/public.decorator';
 
 @Controller('chi-tiet-loai-cong-viec')
 export class ChiTietLoaiCongViecController {
@@ -29,6 +30,7 @@ export class ChiTietLoaiCongViecController {
   ) {}
 
   @Post()
+  @ApiBearerAuth()
   async create(
     @Body() createChiTietLoaiCongViecDto: CreateChiTietLoaiCongViecDto,
   ) {
@@ -38,12 +40,13 @@ export class ChiTietLoaiCongViecController {
   }
 
   @Get()
+  @Public()
   async findAll() {
     return await this.chiTietLoaiCongViecService.findAll();
   }
 
   @Put('sua-nhom-chi-tiet-loai/:id')
-  @SkipPermission()
+  @ApiBearerAuth()
   async updateNhomChiTietLoai(
     @Body() updateNhomChiTietLoaiCongViecDto: UpdateNhomChiTietLoaiCongViecDto,
     @Req() req: Request,
@@ -57,6 +60,7 @@ export class ChiTietLoaiCongViecController {
   }
 
   @Put(':id')
+  @ApiBearerAuth()
   async update(
     @Param('id') id: number,
     @Body() updateChiTietLoaiCongViecDto: UpdateChiTietLoaiCongViecDto,
@@ -68,11 +72,16 @@ export class ChiTietLoaiCongViecController {
   }
 
   @Delete(':id')
+  @ApiBearerAuth()
   async delete(@Param('id') id: number) {
     return await this.chiTietLoaiCongViecService.delete(id);
   }
 
   @Get('search')
+  @Public()
+  @ApiQuery({ name: 'page', required: false , example: 1})
+  @ApiQuery({ name: 'pageSize', required: false , example: 10})
+  @ApiQuery({ name: 'keyword', required: false , example: 'abc'})
   async findByLoaiCongViecId(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,
@@ -86,12 +95,13 @@ export class ChiTietLoaiCongViecController {
   }
 
   @Get(':id')
+  @Public()
   async findOne(@Param('id') id: number) {
     return await this.chiTietLoaiCongViecService.findOne(id);
   }
 
   @Post('them-nhom-chi-tiet-loai')
-  @SkipPermission()
+  @ApiBearerAuth()
   async themNhomChiTietLoai(
     @Body() createNhomChiTietLoaiCongViecDto: CreateNhomChiTietLoaiCongViecDto,
     @Req() req: Request,
@@ -105,7 +115,7 @@ export class ChiTietLoaiCongViecController {
   @Post('upload-image-nhom-chi-tiet-loai/:id')
   @UseInterceptors(FileInterceptor('file'))
   @ApiConsumes('multipart/form-data')
-  @SkipPermission()
+  @ApiBearerAuth()
   @ApiBody({
     description: 'List of cats',
     type: UploadImageNhomDto,

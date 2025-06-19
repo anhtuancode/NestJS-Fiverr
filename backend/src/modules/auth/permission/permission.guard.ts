@@ -11,7 +11,6 @@ export class PermissionGuard extends AuthGuard('permission') {
   }
 
   canActivate(context: ExecutionContext) {
-    console.log(`PermissionStrategy :: active`);
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
       context.getClass(),
