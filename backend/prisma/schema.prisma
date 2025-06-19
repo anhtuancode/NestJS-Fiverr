@@ -81,41 +81,45 @@ model LoaiCongViec {
 }
 
 model NguoiDung {
-  id            Int            @id @default(autoincrement())
-  name          String?        @db.VarChar(255)
-  email         String?        @unique(map: "email") @db.VarChar(255)
-  password      String?        @db.VarChar(255)
-  phone         String?        @db.VarChar(255)
-  birth_day     String?        @db.VarChar(255)
-  gender        String?        @db.VarChar(255)
-  role          String?        @db.VarChar(255)
-  skill         String?        @db.VarChar(255)
-  certification String?        @db.VarChar(255)
-  deletedBy     Int            @default(0)
-  isDeleted     Boolean        @default(false)
-  deletedAt     DateTime       @default(now()) @db.Timestamp(0)
-  createdAt     DateTime       @default(now()) @db.Timestamp(0)
-  updatedAt     DateTime       @default(now()) @db.Timestamp(0)
-  avatar        String?        @db.VarChar(255)
-  BinhLuan      BinhLuan[]
-  CongViec      CongViec[]
-  ThueCongViec  ThueCongViec[]
+  id                                             Int            @id @default(autoincrement())
+  name                                           String?        @db.VarChar(255)
+  email                                          String?        @unique(map: "email") @db.VarChar(255)
+  password                                       String?        @db.VarChar(255)
+  phone                                          String?        @db.VarChar(255)
+  birth_day                                      String?        @db.VarChar(255)
+  gender                                         String?        @db.VarChar(255)
+  role                                           String?        @db.VarChar(255)
+  skill                                          String?        @db.VarChar(255)
+  certification                                  String?        @db.VarChar(255)
+  deletedBy                                      Int            @default(0)
+  isDeleted                                      Boolean        @default(false)
+  deletedAt                                      DateTime       @default(now()) @db.Timestamp(0)
+  createdAt                                      DateTime       @default(now()) @db.Timestamp(0)
+  updatedAt                                      DateTime       @default(now()) @db.Timestamp(0)
+  avatar                                         String?        @db.VarChar(255)
+  BinhLuan                                       BinhLuan[]
+  CongViec                                       CongViec[]
+  ThueCongViec_ThueCongViec_createdByToNguoiDung ThueCongViec[] @relation("ThueCongViec_createdByToNguoiDung")
+  ThueCongViec                                   ThueCongViec[]
 }
 
 model ThueCongViec {
-  id            Int        @id @default(autoincrement())
-  ma_cong_viec  Int?
-  ma_nguoi_thue Int?
-  ngay_thue     DateTime?  @db.DateTime(0)
-  hoan_thanh    Boolean?
-  deletedBy     Int        @default(0)
-  isDeleted     Boolean    @default(false)
-  deletedAt     DateTime   @default(now()) @db.Timestamp(0)
-  createdAt     DateTime   @default(now()) @db.Timestamp(0)
-  updatedAt     DateTime   @default(now()) @db.Timestamp(0)
-  CongViec      CongViec?  @relation(fields: [ma_cong_viec], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ThueCongViec_ibfk_1")
-  NguoiDung     NguoiDung? @relation(fields: [ma_nguoi_thue], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ThueCongViec_ibfk_2")
+  id                                          Int        @id @default(autoincrement())
+  ma_cong_viec                                Int?
+  ma_nguoi_thue                               Int?
+  ngay_thue                                   DateTime?  @db.DateTime(0)
+  hoan_thanh                                  Boolean?
+  deletedBy                                   Int        @default(0)
+  isDeleted                                   Boolean    @default(false)
+  deletedAt                                   DateTime   @default(now()) @db.Timestamp(0)
+  createdAt                                   DateTime   @default(now()) @db.Timestamp(0)
+  updatedAt                                   DateTime   @default(now()) @db.Timestamp(0)
+  createdBy                                   Int?
+  NguoiDung_ThueCongViec_createdByToNguoiDung NguoiDung? @relation("ThueCongViec_createdByToNguoiDung", fields: [createdBy], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "FK_ThueCongViec_NguoiTao")
+  CongViec                                    CongViec?  @relation(fields: [ma_cong_viec], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ThueCongViec_ibfk_1")
+  NguoiDung                                   NguoiDung? @relation(fields: [ma_nguoi_thue], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "ThueCongViec_ibfk_2")
 
   @@index([ma_cong_viec], map: "ma_cong_viec")
   @@index([ma_nguoi_thue], map: "ma_nguoi_thue")
+  @@index([createdBy], map: "FK_ThueCongViec_NguoiTao")
 }

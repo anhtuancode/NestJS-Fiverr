@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateThueCongViecDto } from './dto/createThueCongViec.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdateThueCongViecDto } from './dto/updateThueCongViec.dto';
+import { create } from 'domain';
 
 @Injectable()
 export class ThueCongViecService {
@@ -27,14 +28,20 @@ export class ThueCongViecService {
     return data;
   }
 
-  async create(createThueCongViecDto: CreateThueCongViecDto) {
+  async create(createThueCongViecDto: CreateThueCongViecDto, user: any) {
     const { ma_cong_viec, ma_nguoi_thue, ngay_thue, hoan_thanh } =
       createThueCongViecDto;
+    const userId = Number(user.id);
 
     const existJob = await this.prismaService.congViec.findUnique({
       where: { id: ma_cong_viec },
     });
 
+    const existUser = await this.prismaService.nguoiDung.findUnique({
+      where: { id: ma_nguoi_thue },
+    });
+
+    if (!existUser) throw new BadRequestException('User not found');
     if (!existJob) throw new BadRequestException('Job not found');
 
     const formattedDate = new Date(ngay_thue).toISOString();
@@ -45,6 +52,7 @@ export class ThueCongViecService {
         ma_nguoi_thue,
         ngay_thue: formattedDate,
         hoan_thanh,
+        createdBy: userId,
       },
     });
 
@@ -59,6 +67,7 @@ export class ThueCongViecService {
       ma_nguoi_thue: result.ma_nguoi_thue,
       ngay_thue: result.ngay_thue,
       hoan_thanh: result.hoan_thanh,
+      createBy: result.createdBy,
     };
   }
 
@@ -70,13 +79,26 @@ export class ThueCongViecService {
       },
     });
 
-    if (!result) throw new BadRequestException('Job not found');
+    if (!result) throw new BadRequestException('Not found');
 
-    return result;
+    const data = {
+      id: result.id,
+      maCongViec: result.ma_cong_viec,
+      maNguoiThue: result.ma_nguoi_thue,
+      ngayThue: result.ngay_thue ? result.ngay_thue.toISOString() : null,
+      hoanThanh: result.hoan_thanh,
+    };
+
+    return data;
   }
 
-  async update(id: number, updateThueCongViecDto: UpdateThueCongViecDto) {
+  async update(
+    id: number,
+    updateThueCongViecDto: UpdateThueCongViecDto,
+    user: any,
+  ) {
     const jobId = Number(id);
+    const userId = Number(user.id);
 
     const fieldsToUpdate = Object.fromEntries(
       Object.entries(updateThueCongViecDto).filter(
@@ -92,26 +114,61 @@ export class ThueCongViecService {
       fieldsToUpdate.ngay_thue = date;
     }
 
+    if (fieldsToUpdate.ma_nguoi_thue) {
+      const userExists = await this.prismaService.nguoiDung.findUnique({
+        where: { id: Number(fieldsToUpdate.ma_nguoi_thue) },
+      });
+
+      if (!userExists) {
+        throw new BadRequestException(
+          `User not found`,
+        );
+      }
+    }
+
     const existJob = await this.prismaService.thueCongViec.findUnique({
-      where: { id: fieldsToUpdate.ma_cong_viec },
+      where: { id: jobId },
     });
 
     if (!existJob) throw new BadRequestException('Job not found');
 
+    if (existJob.createdBy !== userId)
+      throw new BadRequestException(
+        'You dont have permission to update this job',
+      );
+
     const result = await this.prismaService.thueCongViec.update({
       where: {
         id: jobId,
+        createdBy: userId,
       },
       data: fieldsToUpdate,
     });
 
     if (!result) throw new BadRequestException('Update failed');
 
-    return result;
+    const data = {
+      id: result.id,
+      maCongViec: result.ma_cong_viec,
+      maNguoiTao: result.createdBy,
+      maNguoiThue: result.ma_nguoi_thue,
+      ngayThue: result.ngay_thue ? result.ngay_thue.toISOString() : null,
+      hoanThanh: result.hoan_thanh,
+    };
+
+    return data;
   }
 
-  async delete(id: number) {
+  async delete(id: number, user: any) {
     const jobId = Number(id);
+    const userId = Number(user.id);
+
+    const existJob = await this.prismaService.thueCongViec.findUnique({
+      where: { id: jobId },
+    });
+
+    if (!existJob) throw new BadRequestException('Job not found');
+
     const result = await this.prismaService.thueCongViec.update({
       where: {
         id: jobId,
@@ -122,8 +179,17 @@ export class ThueCongViecService {
     });
 
     if (!result) throw new BadRequestException('Delete failed');
+    if(result.createdBy !== userId) throw new BadRequestException('You dont have permission to delete this job');
 
-    return result;
+    const data = {
+      id: result.id,
+      maCongViec: result.ma_cong_viec,
+      maNguoiTao: result.createdBy,
+      maNguoiThue: result.ma_nguoi_thue,
+      ngayThue: result.ngay_thue ? result.ngay_thue.toISOString() : null,
+      hoanThanh: result.hoan_thanh,
+    };
+    return data;
   }
 
   async findAllHoanThanh(page: number, pageSize: number) {
@@ -159,17 +225,25 @@ export class ThueCongViecService {
 
     const totalPage = Math.ceil(totalItem / pageSize);
 
+    const data = result.map((item) => ({
+      id: item.id,
+      maCongViec: item.ma_cong_viec,
+      maNguoiThue: item.ma_nguoi_thue,
+      ngayThue: item.ngay_thue ? item.ngay_thue.toISOString() : null,
+      hoanThanh: item.hoan_thanh,
+    }));
+
     return {
       page: page,
       pageSize: pageSize,
       totalItem: totalItem,
       totalPage: totalPage,
-      data: result,
+      data: data,
     };
   }
 
   async findAllChuaHoanThanh(page: number, pageSize: number) {
-     page = Number(page);
+    page = Number(page);
     page = page > 0 ? page : 1;
     pageSize = Number(pageSize);
     pageSize = pageSize > 0 ? pageSize : 10;
@@ -192,6 +266,14 @@ export class ThueCongViecService {
 
     if (!result) throw new BadRequestException('Get all data failed');
 
+    const data = result.map((item) => ({
+      id: item.id,
+      maCongViec: item.ma_cong_viec,
+      maNguoiThue: item.ma_nguoi_thue,
+      ngayThue: item.ngay_thue ? item.ngay_thue.toISOString() : null,
+      hoanThanh: item.hoan_thanh,
+    }));
+
     const totalItem = await this.prismaService.thueCongViec.count({
       where: {
         hoan_thanh: true,
@@ -206,7 +288,7 @@ export class ThueCongViecService {
       pageSize: pageSize,
       totalItem: totalItem,
       totalPage: totalPage,
-      data: result,
+      data: data,
     };
   }
 
@@ -261,17 +343,27 @@ export class ThueCongViecService {
     const job = await this.prismaService.thueCongViec.findUnique({
       where: { id: jobId },
     });
+
     if (!job) throw new BadRequestException('Job not found');
-    
-    if (job.ma_nguoi_thue !== userId) throw new BadRequestException('You are not the owner of this job');
+
+    if (job.createdBy !== userId)
+      throw new BadRequestException('You are not the owner of this job');
 
     const result = await this.prismaService.thueCongViec.update({
-      where: { id: jobId },
+      where: { id: jobId, createdBy: userId },
       data: { hoan_thanh: true },
-    }); 
-    if (!result) throw new BadRequestException('Update failed')
+    });
+    if (!result) throw new BadRequestException('Update failed');
 
-    return result;
+    const data = {
+      id: result.id,
+      maCongViec: result.ma_cong_viec,
+      maNguoiTao: result.createdBy,
+      maNguoiThue: result.ma_nguoi_thue,
+      ngayThue: result.ngay_thue ? result.ngay_thue.toISOString() : null,
+      hoanThanh: result.hoan_thanh,
+    };
+
+    return data;
   }
-  
 }
