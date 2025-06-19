@@ -12,13 +12,13 @@ export class PermissionGuard extends AuthGuard('permission') {
 
   canActivate(context: ExecutionContext) {
     console.log(`PermissionStrategy :: active`);
-    // const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
-    //   context.getHandler(),
-    //   context.getClass(),
-    // ]);
-    // if (isPublic) {
-    //   return true;
-    // }
+    const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    if (isPublic) {
+      return true;
+    }
 
     const skipPermission = this.reflector.getAllAndOverride<boolean>(IS_SKIP_PERMISSION, [
       context.getHandler(),

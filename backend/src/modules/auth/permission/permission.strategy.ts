@@ -26,7 +26,7 @@ export class PermissionStrategy extends PassportStrategy(
       throw new UnauthorizedException('Không xác định được người dùng');
     }
 
-    if (!role || role.trim() === '') {
+    if (!role || role.trim() === '' || role === 'user') {
       throw new ForbiddenException('Bạn không có quyền truy cập');
     }
 
@@ -37,7 +37,6 @@ export class PermissionStrategy extends PassportStrategy(
     // 1 - endpoint người dùng gọi
     const endpoint = req?._parsedUrl?.pathname;
     const method = req?.method;
-    console.log({ endpoint, method, role, user });
 
     const isPermission = await this.prismaService.nguoiDung.findFirst({
       where: {

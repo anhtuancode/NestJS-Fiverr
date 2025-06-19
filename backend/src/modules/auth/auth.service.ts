@@ -40,6 +40,9 @@ export class AuthService {
     if (!userExist?.password)
       throw new BadRequestException('Please login with google or facebook');
 
+    if (userExist.isDeleted)
+      throw new BadRequestException('This account has been blocked, please contact admin');
+
     const isPassword = await bcrypt.compare(password, userExist.password);
 
     if (!isPassword)

@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   Req,
-  UseGuards,
 } from '@nestjs/common';
 import { BinhLuanService } from './binhLuan.service';
 import { CreateBinhLuanDto } from './dto/createBinhLuan.dto';

@@ -24,7 +24,7 @@ export class UsersService {
       phone: user.phone,
       avatar: user.avatar,
       gender: user.gender,
-      role: user.role,
+      role: user.role ? user.role : 'user',
       birthday: user.birth_day,
       skills: user.skill,
       certification: user.certification,
@@ -76,20 +76,24 @@ export class UsersService {
     return newUser;
   }
 
-  async delete(id: number) {
-    const userId = Number(id);
+
+  async delete(id: number, user: any) {
+    const accountId = Number(id);
+    const userId = Number(user.id);
 
     const userExist = await this.prismaService.nguoiDung.findUnique({
       where: {
-        id: userId,
+        id: accountId,
       },
     });
 
     if (!userExist) throw new BadRequestException('User not found');
 
+    if(userExist.id !== userId) throw new BadRequestException('You dont have permission to delete this user');
+
     const result = await this.prismaService.nguoiDung.update({
       where: {
-        id: userId,
+        id: accountId,
       },
       data: {
         isDeleted: true,
@@ -175,19 +179,35 @@ export class UsersService {
 
     if (!user) throw new BadRequestException('User not found');
 
-    return user;
+    const data = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.avatar,
+      gender: user.gender,
+      role: user.role ? user.role : 'user',
+      birthday: user.birth_day,
+      skills: user.skill,
+      certification: user.certification,
+    };
+
+    return data;
   }
 
-  async update(updateUserDto: UpdateUserDto, id: number) {
-    const userId = Number(id);
+  async update(updateUserDto: UpdateUserDto, id: number, user: any) {
+    const accountId = Number(id);
+    const userId = Number(user.id);
 
     const userExist = await this.prismaService.nguoiDung.findUnique({
       where: {
-        id: userId,
+        id: accountId,
       },
     });
 
-    if (!userExist) throw new BadRequestException('User not found');
+    if(!userExist) throw new BadRequestException('User not found');
+
+    if(userExist.id !== userId) throw new BadRequestException('You dont have permission to update this user');
 
     const fieldsToUpdate = Object.fromEntries(
       await Promise.all(
@@ -211,7 +231,7 @@ export class UsersService {
 
     const result = await this.prismaService.nguoiDung.update({
       where: {
-        id: userId,
+        id: accountId,
       },
       data: fieldsToUpdate,
     });
@@ -243,7 +263,20 @@ export class UsersService {
 
     if (!users) throw new BadRequestException('Dont have any user');
 
-    return users;
+      const result = users.map((user) => ({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      avatar: user.avatar,
+      gender: user.gender,
+      role: user.role ? user.role : 'user',
+      birthday: user.birth_day,
+      skills: user.skill,
+      certification: user.certification,
+    }));
+
+    return result;
   }
 
   async uploadAvatar(file: Express.Multer.File, user: any) {
