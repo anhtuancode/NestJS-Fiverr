@@ -28,12 +28,6 @@ export class AuthController {
     return await this.authService.signup(signupDtoAuth);
   }
 
-
-  @Post("logout")
-  async logout(@User('id') userId: number){
-    return await this.authService.logout(userId);
-  }
-
   @Public()
   @SkipPermission()
   @Post("forgot-password")

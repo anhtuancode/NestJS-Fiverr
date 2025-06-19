@@ -15,7 +15,6 @@ import {
   REFRESH_TOKEN_SECRET,
 } from 'src/common/constant/app.constant';
 import { JwtService } from '@nestjs/jwt';
-import { Public } from 'src/common/decorator/public.decorator';
 
 @Injectable()
 export class AuthService {
@@ -91,9 +90,6 @@ export class AuthService {
     return result;
   }
 
-  async logout(userId: number) {
-    return { message: 'Logout successfully' };
-  }
 
   async forgotPassword(forgotPasswordAuthDto: ForgotPasswordAuthDto) {
     const { email, password, confirm_password } = forgotPasswordAuthDto;

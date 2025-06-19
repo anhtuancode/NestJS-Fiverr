@@ -26,6 +26,24 @@ export class CongViecService {
       sao_cong_viec,
     } = createCongViecDto;
 
+    const checkJob = await this.prismaService.chiTietLoaiCongViec.findUnique({
+      where:{
+        id: ma_chi_tiet_loai,
+        isDeleted: false
+      }
+    })
+
+    if(!checkJob) throw new BadRequestException('Ma chi tiet loai khong hop le');
+
+    const user = await this.prismaService.nguoiDung.findUnique({
+      where: {
+        id: nguoi_tao,
+        isDeleted: false
+      },
+    });
+
+    if (!user) throw new BadRequestException('User not found');
+
     const job = await this.prismaService.congViec.create({
       data: {
         ten_cong_viec: ten_cong_viec,
@@ -40,6 +58,8 @@ export class CongViecService {
       },
     });
 
+
+
     if (!job)
       throw new BadRequestException(
         'Create job failed. Please check your information again',
@@ -48,8 +68,9 @@ export class CongViecService {
     return job;
   }
 
-  async delete(id: number) {
+  async delete(id: number, user: any) {
     const jobId = Number(id);
+    const userId = Number(user.id);
 
     const job = await this.prismaService.congViec.findUnique({
       where: {
@@ -58,6 +79,8 @@ export class CongViecService {
     });
 
     if (!job) throw new BadRequestException('Job not found');
+
+    if(job.nguoi_tao !== userId) throw new BadRequestException('You are not the owner of this job');
 
     const result = await this.prismaService.congViec.update({
       where: {
@@ -73,16 +96,20 @@ export class CongViecService {
     return result;
   }
 
-  async update(id: number, @Body() updateCongViecDto: UpdateCongViecDto) {
+  async update(id: number, @Body() updateCongViecDto: UpdateCongViecDto, user: any) {
     const jobId = Number(id);
+    const userId = Number(user.id);
 
     const job = await this.prismaService.congViec.findUnique({
       where: {
         id: jobId,
+        isDeleted: false
       },
     });
 
     if (!job) throw new BadRequestException('Job not found');
+    if(job.nguoi_tao !== userId) throw new BadRequestException('You are not the owner of this job');
+    if(!job.ma_chi_tiet_loai) throw new BadRequestException('Ma chi tiet loai khong hop le');
 
     // Chặn sửa người tạo
     if ('nguoi_tao' in updateCongViecDto) {
@@ -108,38 +135,29 @@ export class CongViecService {
     return result;
   }
 
-  async findAll(page: number, pageSize: number) {
-    page = Number(page);
-    page = page > 0 ? page : 1;
-    pageSize = Number(pageSize);
-    pageSize = pageSize > 0 ? pageSize : 10;
-
-    const skip = (page - 1) * pageSize;
-
-    const result = await this.prismaService.congViec.findMany({
-      where: { isDeleted: false },
-      take: pageSize,
-      skip: skip,
-      orderBy: {
-        createdAt: 'desc',
+  async findAll() {
+    const jobs = await this.prismaService.congViec.findMany({
+      where: {
+        isDeleted: false,
       },
     });
 
-    if (!result) throw new BadRequestException('Job not found');
+    if (!jobs) throw new BadRequestException('Get all data failed');
 
-    const totalItem = await this.prismaService.congViec.count({
-      where: { isDeleted: false },
-    });
+    const data = jobs.map((item) => ({
+      id: item.id,
+      ten_cong_viec: item.ten_cong_viec,
+      danh_gia: item.danh_gia,
+      gia_tien: item.gia_tien,
+      nguoi_tao: item.nguoi_tao,
+      hinh_anh: item.hinh_anh,
+      mo_ta: item.mo_ta,
+      mo_ta_ngan: item.mo_ta_ngan,
+      ma_chi_tiet_loai: item.ma_chi_tiet_loai,
+      sao_cong_viec: item.sao_cong_viec,
+    }));
 
-    const totalPage = Math.ceil(totalItem / pageSize);
-
-    return {
-      page: page,
-      pageSize: pageSize,
-      totalItem: totalItem,
-      totalPage: totalPage,
-      items: result || [],
-    };
+    return data;
   }
 
   async findOne(id: number) {
@@ -154,7 +172,21 @@ export class CongViecService {
 
     if (!job) throw new BadRequestException('Job not found');
 
-    return job;
+    const data = {
+      id: job.id,
+      ten_cong_viec: job.ten_cong_viec,
+      danh_gia: job.danh_gia,
+      gia_tien: job.gia_tien,
+      nguoi_tao: job.nguoi_tao,
+      hinh_anh: job.hinh_anh,
+      mo_ta: job.mo_ta,
+      mo_ta_ngan: job.mo_ta_ngan,
+      ma_chi_tiet_loai: job.ma_chi_tiet_loai,
+      sao_cong_viec: job.sao_cong_viec,
+    };
+
+
+    return data;
   }
 
   async search(keyword: string, page: number, pageSize: number) {
@@ -398,17 +430,23 @@ export class CongViecService {
     return data;
   }
 
-  async uploadImage(file: Express.Multer.File, id: number) {
+  async uploadImage(file: Express.Multer.File, id: number, user: any) {
     const typeId = Number(id);
+    const userId = Number(user.id);
+
+    console.log(typeId);
 
     if (!file) throw new Error('No file uploaded');
 
     const result = await this.prismaService.congViec.findUnique({
       where: {
         id: typeId,
+        isDeleted: false,
       },
     });
-    if (!result) throw new BadRequestException('Get all data failed');
+
+    if (!result) throw new BadRequestException('Job not found');
+    if(result.nguoi_tao !== userId) throw new BadRequestException('You are not the owner of this job');
 
     if (result?.hinh_anh) {
       await cloudinary.uploader.destroy(result.hinh_anh);
@@ -425,6 +463,8 @@ export class CongViecService {
         hinh_anh: fileUpload.secure_url,
       },
     });
+
+
     return {
       folder: fileUpload.asset_folder,
       filename: file.originalname,
