@@ -13,16 +13,16 @@ NestJs Fiverr là một dự án backend mô phỏng nền tảng thuê dịch v
 
 ## 🧩 Tính năng cơ bản
 
-✅ Đăng ký / Đăng nhập / Xác thực JWT
-✅ Quản lý người dùng (Admin hoặc Người dùng)
-✅ CRUD công việc (thêm, sửa, xoá, tìm kiếm, phân trang)
-✅ Phân loại công việc theo Loại và Chi tiết loại
-✅ Thuê công việc và quản lý lịch sử thuê
-✅ Bình luận và đánh giá công việc
-✅ Tìm kiếm công việc theo từ khoá, loại công việc
-✅ Phân quyền API theo vai trò (Admin/User)
-✅ Swagger UI cho API docs
-
+- ✅ Đăng ký / Đăng nhập / Xác thực JWT
+- ✅ Quản lý người dùng (Admin hoặc Người dùng)
+- ✅ CRUD công việc (thêm, sửa, xoá, tìm kiếm, phân trang)
+- ✅ Phân loại công việc theo Loại và Chi tiết loại
+- ✅ Thuê công việc và quản lý lịch sử thuê
+- ✅ Bình luận và đánh giá công việc
+- ✅ Tìm kiếm công việc theo từ khoá, loại công việc
+- ✅ Phân quyền API theo vai trò (Admin/User)
+- ✅ Swagger UI cho API docs
+  
 ---
 
 ## ⚙️ Kiến trúc hệ thống
