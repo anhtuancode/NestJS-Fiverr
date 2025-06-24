@@ -1,0 +1,325 @@
+{
+	"info": {
+		"_postman_id": "6e31a898-4415-4043-a96e-e13719fc72ad",
+		"name": "Thuê Công Việc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40891259",
+		"_collection_link": "https://www.postman.com/anhtuan-3359/workspace/nestjs-fiverr/collection/40891259-6e31a898-4415-4043-a96e-e13719fc72ad?action=share&source=collection_link&creator=40891259"
+	},
+	"item": [
+		{
+			"name": "Tạo thuê công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ma_cong_viec\": 2,\r\n    \"ma_nguoi_thue\": 5,\r\n    \"ngay_thue\": \"2025-06-10\",\r\n    \"hoan_thanh\": true\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ma_cong_viec\": 1,\r\n    \"ma_nguoi_thue\": 12,\r\n    \"ngay_thue\": \"2025-06-10\",\r\n    \"hoan_thanh\": true\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ma_cong_viec\": 4,\r\n    \"ma_nguoi_thue\": 12,\r\n    \"ngay_thue\": \"2025-06-10\",\r\n    \"hoan_thanh\": true\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sửa thuê công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ma_cong_viec\": 3,\r\n    \"hoan_thanh\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xóa thuê công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ma_cong_viec\": 2,\r\n    \"ma_nguoi_thue\": 2,\r\n    \"ngay_thue\": \"2024-06-15\",\r\n    \"hoan_thanh\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tìm các công việc đã hoàn thành",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ma_cong_viec\": 2,\r\n    \"ma_nguoi_thue\": 2,\r\n    \"ngay_thue\": \"2024-06-15\",\r\n    \"hoan_thanh\": false\r\n}"
+				},
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec/hoan-thanh",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec",
+						"hoan-thanh"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tìm các công việc chưa hoàn thành",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec/chua-hoan-thanh?page=1&pageSize=2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec",
+						"chua-hoan-thanh"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Danh sách công việc đã thuê của người dùng",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec/danh-sach-da-thue?page=1&pageSize=3",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec",
+						"danh-sach-da-thue"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tick hoàn thành công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/thue-cong-viec/hoan-thanh/8",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"thue-cong-viec",
+						"hoan-thanh",
+						"8"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,200 @@
+{
+	"info": {
+		"_postman_id": "d4a45cfc-6859-4b06-bd89-1ca6921bfc97",
+		"name": "Loại công việc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40891259",
+		"_collection_link": "https://www.postman.com/anhtuan-3359/workspace/nestjs-fiverr/collection/40891259-d4a45cfc-6859-4b06-bd89-1ca6921bfc97?action=share&source=collection_link&creator=40891259"
+	},
+	"item": [
+		{
+			"name": "Tạo loại công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_loai_cong_viec\": \"Thiết kế đồ họa\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/loai-cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"loai-cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find All",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/loai-cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"loai-cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find One",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/loai-cong-viec/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"loai-cong-viec",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sửa loại công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_loai_cong_viec\": \"Lập trình backend\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/loai-cong-viec/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"loai-cong-viec",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xóa loại công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_loai_cong_viec\": \"Lập trình backend\"\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/loai-cong-viec/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"loai-cong-viec",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_loai_cong_viec\": \"Lập trình backend\"\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/loai-cong-viec/search?page=1&pageSize=10&search=''",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"loai-cong-viec",
+						"search"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "10"
+						},
+						{
+							"key": "search",
+							"value": "''"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

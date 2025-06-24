@@ -23,7 +23,11 @@ export class LoaiCongViecService {
   }
 
   async findAll() {
-    const result = await this.prismaService.loaiCongViec.findMany();
+    const result = await this.prismaService.loaiCongViec.findMany({
+      where: {
+        isDeleted: false,
+      },
+    });
 
     if (!result) throw new BadRequestException('Get all data failed');
 
@@ -103,14 +107,9 @@ export class LoaiCongViecService {
 
     const skip = (page - 1) * pageSize;
 
-    const where = {
-        isDeleted: false,
-        ...(search ? { ten_cong_viec: { contains: search } } : {}), 
-    };
+    const where = { ten_loai_cong_viec: { contains: search }, isDeleted: false };
 
-    console.log(where);
-
-    const result = await this.prismaService.congViec.findMany({
+    const result = await this.prismaService.loaiCongViec.findMany({
       where: where,
       take: pageSize,
       skip: skip,
@@ -119,9 +118,10 @@ export class LoaiCongViecService {
       },
     });
 
-    if (!result || result.length === 0) throw new BadRequestException('Type Job not found');
+    if (!result || result.length === 0)
+      throw new BadRequestException('Type Job not found');
 
-    const totalItem = await this.prismaService.congViec.count({
+    const totalItem = await this.prismaService.loaiCongViec.count({
       where: where,
     });
 

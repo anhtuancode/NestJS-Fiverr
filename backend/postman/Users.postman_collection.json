@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "d68ace2f-3b2a-46c1-a978-e7badd4b9a66",
+		"name": "Users",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40891259",
+		"_collection_link": "https://www.postman.com/anhtuan-3359/workspace/nestjs-fiverr/collection/40891259-d68ace2f-3b2a-46c1-a978-e7badd4b9a66?action=share&source=collection_link&creator=40891259"
+	},
+	"item": [
+		{
+			"name": "Upload Avatar",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "avatar",
+							"type": "file",
+							"src": [
+								"/C:/Users/TUAN/Downloads/mindxImage.jpg",
+								"/C:/Users/TUAN/Downloads/collage.jpg"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "{{domain}}api/users/upload-avatar",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users",
+						"upload-avatar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_loai_cong_viec\": \"Viết nội dung\"\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/users",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tạo user mới",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Tuấn Thanh\",\r\n  \"email\": \"nguyenvantuan111@example.com\",\r\n  \"password\": \"12345678\",\r\n  \"phone\": \"0909123456\",\r\n  \"birthday\": \"1995-05-20\",\r\n  \"gender\": true,\r\n  \"role\": \"user\",\r\n  \"skill\": [\"HTML\", \"CSS\", \"JavaScript\"],\r\n  \"certification\": [\"Google Web Developer\", \"AWS Certified\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/users",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sửa người dùng",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Nguyễn Văn Tuấn\",\r\n  \"password\": \"123456789\",\r\n  \"phone\": \"0909123456\",\r\n  \"birth_day\": \"1995-05-20\",\r\n  \"gender\": true,\r\n  \"role\": \"user\",\r\n  \"skill\": [\"HTML\", \"CSS\", \"JavaScript\"],\r\n  \"certification\": [\"Google Web Developer\", \"AWS Certified\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/users/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xóa người dùng",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Nguyễn Văn Tuấn\",\r\n  \"password\": \"123456789\",\r\n  \"phone\": \"0909123456\",\r\n  \"birth_day\": \"1995-05-20\",\r\n  \"gender\": true,\r\n  \"role\": \"user\",\r\n  \"skill\": [\"HTML\", \"CSS\", \"JavaScript\"],\r\n  \"certification\": [\"Google Web Developer\", \"AWS Certified\"]\r\n}"
+				},
+				"url": {
+					"raw": "{{domain}}api/users/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Tìm kiếm theo tên",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Nguyễn Văn Tuấn\",\r\n  \"email\": \"nguyenvantuan@example.com\",\r\n  \"password\": \"12345678\",\r\n  \"phone\": \"0909123456\",\r\n  \"birthday\": \"1995-05-20\",\r\n  \"gender\": true,\r\n  \"role\": \"user\",\r\n  \"skill\": [\"HTML\", \"CSS\", \"JavaScript\"],\r\n  \"certification\": [\"Google Web Developer\", \"AWS Certified\"]\r\n}"
+				},
+				"url": {
+					"raw": "{{domain}}api/users/search/ngoc",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users",
+						"search",
+						"ngoc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find One",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_loai_cong_viec\": \"Viết nội dung\"\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/users/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Phân trang tìm kiếm",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_loai_cong_viec\": \"Viết nội dung\"\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/users/phan-trang-tim-kiem?page=1&pageSize=5&keyword=tuan",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"users",
+						"phan-trang-tim-kiem"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "5"
+						},
+						{
+							"key": "keyword",
+							"value": "tuan"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

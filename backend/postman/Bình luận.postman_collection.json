@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "290d6aff-0f7b-4ac1-811b-51e1ff55b8dc",
+		"name": "Bình luận",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40891259",
+		"_collection_link": "https://www.postman.com/anhtuan-3359/workspace/nestjs-fiverr/collection/40891259-290d6aff-0f7b-4ac1-811b-51e1ff55b8dc?action=share&source=collection_link&creator=40891259"
+	},
+	"item": [
+		{
+			"name": "Tạo bình luận",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ma_cong_viec\": 1,\r\n    \"noi_dung\": \"Rất hài lòng, freelancer làm việc chuyên nghiệp\",\r\n    \"sao_binh_luan\": 5\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/binh-luan",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"binh-luan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"lequang@example.com\",\r\n    \"password\": \"12345678\"\r\n}"
+				},
+				"url": {
+					"raw": "{{domain}}api/binh-luan",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"binh-luan"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sửa bình luận",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"noi_dung\": \"Test lai 1 lan nua\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/binh-luan/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"binh-luan",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xóa bình luận",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"noi_dung\": \"Test123\"\r\n}"
+				},
+				"url": {
+					"raw": "{{domain}}api/binh-luan/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"binh-luan",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find Many by Id",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ma_cong_viec\": 1,\r\n    \"noi_dung\": \"Rất hài lòng, freelancer làm việc chuyên nghiệp\",\r\n    \"sao_binh_luan\": 5\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/binh-luan/lay-binh-luan-theo-cong-viec/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"binh-luan",
+						"lay-binh-luan-theo-cong-viec",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

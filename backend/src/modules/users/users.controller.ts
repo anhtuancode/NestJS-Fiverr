@@ -27,7 +27,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @Public()
+  @ApiBearerAuth()
   async findAll() {
     return await this.usersService.findAll();
   }
@@ -46,10 +46,15 @@ export class UsersController {
   }
 
   @Get('phan-trang-tim-kiem')
-  @Public()
-  @ApiQuery({ name: 'page', required: false, type: Number, example: 1})
-  @ApiQuery({ name: 'pageSize', required: false, type: Number, example: 10})
-  @ApiQuery({ name: 'keyword', required: false, type: String, example: 'Nguyễn Văn A'})
+  @ApiBearerAuth()
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'pageSize', required: false, type: Number, example: 10 })
+  @ApiQuery({
+    name: 'keyword',
+    required: false,
+    type: String,
+    example: 'Nguyễn Văn A',
+  })
   async search(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,

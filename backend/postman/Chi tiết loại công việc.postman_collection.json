@@ -1,0 +1,326 @@
+{
+	"info": {
+		"_postman_id": "d2e7eacd-dcdf-4da9-b3cb-6667c21c337e",
+		"name": "Chi tiết loại công việc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40891259",
+		"_collection_link": "https://www.postman.com/anhtuan-3359/workspace/nestjs-fiverr/collection/40891259-d2e7eacd-dcdf-4da9-b3cb-6667c21c337e?action=share&source=collection_link&creator=40891259"
+	},
+	"item": [
+		{
+			"name": "Tạo chi tiết loại công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"ten_chi_tiet\": \"Viết bài mô tả sản phẩm\",\r\n  \"hinh_anh\": \"https://example.com/images/product-description.png\",\r\n  \"ma_loai_cong_viec\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find All",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find One",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"hinh_anh\": \"https://example.com/images/seo-writing.png\",\r\n    \"ma_loai_cong_viec\": 5\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"hinh_anh\": \"https://example.com/images/seo-writing.png\",\r\n    \"ma_loai_cong_viec\": 5\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"ma_cong_viec\": 1,\r\n    \"noi_dung\": \"Rất hài lòng, freelancer làm việc chuyên nghiệp\",\r\n    \"sao_binh_luan\": 5\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec/search?keyword=Viết nội dung",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec",
+						"search"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "Viết nội dung"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Thêm nhóm chi tiết",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"ten_chi_tiet\": \"Nhóm Thiết kế đồ họa\",\r\n  \"ma_loai_cong_viec\": 6,\r\n  \"danh_sach_chi_tiet\": [11, 12, 13]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec/them-nhom-chi-tiet-loai",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec",
+						"them-nhom-chi-tiet-loai"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Image Group",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/TUAN/Downloads/collage (2).jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec/upload-image-nhom-chi-tiet-loai/18",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec",
+						"upload-image-nhom-chi-tiet-loai",
+						"18"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Group Job Detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"ten_chi_tiet\": \"Nhóm Thiết kế đồ họa kĩ thuật số\",\r\n  \"ma_loai_cong_viec\": 6,\r\n  \"danh_sach_chi_tiet\": [11, 12, 13]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/chi-tiet-loai-cong-viec/sua-nhom-chi-tiet-loai/18",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"chi-tiet-loai-cong-viec",
+						"sua-nhom-chi-tiet-loai",
+						"18"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

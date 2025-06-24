@@ -13,8 +13,7 @@ import { LoaiCongViecService } from './loaiCongViec.service';
 import { CreateLoaiCongViecDto } from './dto/createLoaiCongViec.dto';
 import { Public } from 'src/common/decorator/public.decorator';
 import { Request } from 'express';
-import { SkipPermission } from 'src/common/decorator/skip-permission.decorator';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 
 @Controller('loai-cong-viec')
 export class LoaiCongViecController {
@@ -28,6 +27,9 @@ export class LoaiCongViecController {
 
   @Get('search')
   @Public()
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'pageSize', required: false, type: Number, example: 10 })
+  @ApiQuery({ name: 'search', required: false, type: String, example: "Lập trình" })
   async search(
     @Query('page') page: number,
     @Query('pageSize') pageSize: number,

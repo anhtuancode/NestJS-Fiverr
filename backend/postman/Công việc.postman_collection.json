@@ -1,0 +1,380 @@
+{
+	"info": {
+		"_postman_id": "08f1dfe6-14c9-4c25-9c4a-4fea5e56ce26",
+		"name": "Công việc",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40891259",
+		"_collection_link": "https://www.postman.com/anhtuan-3359/workspace/nestjs-fiverr/collection/40891259-08f1dfe6-14c9-4c25-9c4a-4fea5e56ce26?action=share&source=collection_link&creator=40891259"
+	},
+	"item": [
+		{
+			"name": "Tạo công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_cong_viec\": \"Dịch tài liệu kỹ thuật Anh-Việt\",\r\n    \"danh_gia\": 12,\r\n    \"gia_tien\": 1500000,\r\n    \"nguoi_tao\": 6,\r\n    \"hinh_anh\": \"https://example.com/images/technical-translation.png\",\r\n    \"mo_ta\": \"Dịch chính xác tài liệu kỹ thuật với ngôn ngữ chuyên ngành rõ ràng, dễ hiểu.\",\r\n    \"mo_ta_ngan\": \"Dịch thuật chuyên ngành kỹ thuật.\",\r\n    \"ma_chi_tiet_loai\": 5,\r\n    \"sao_cong_viec\": 4.8\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload Image",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "hinh_anh",
+							"type": "file",
+							"src": "/C:/Users/TUAN/Downloads/Screenshot 2025-05-31 153333.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{domain}}api/cong-viec/upload-image/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"upload-image",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Xóa công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"accessToken\": \"{{accessToken}}\",\r\n    \"refreshToken\": \"{{refreshToken}}\"\r\n}"
+				},
+				"url": {
+					"raw": "{{domain}}api/cong-viec/99",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"99"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sửa công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_cong_viec\": \"Dịch tài liệu kỹ thuật\",\r\n    \"gia_tien\": 700000000\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{domain}}api/cong-viec/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find All",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"ten_cong_viec\": \"Dịch tài liệu kỹ thuật Anh-Việt\",\r\n    \"danh_gia\": 12,\r\n    \"gia_tien\": 1500000,\r\n    \"nguoi_tao\": 6,\r\n    \"hinh_anh\": \"https://example.com/images/technical-translation.png\",\r\n    \"mo_ta\": \"Dịch chính xác tài liệu kỹ thuật với ngôn ngữ chuyên ngành rõ ràng, dễ hiểu.\",\r\n    \"mo_ta_ngan\": \"Dịch thuật chuyên ngành kỹ thuật.\",\r\n    \"ma_chi_tiet_loai\": 5,\r\n    \"sao_cong_viec\": 4.8\r\n  }"
+				},
+				"url": {
+					"raw": "{{domain}}api/cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find one",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{domain}}api/cong-viec/2",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "search",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{domain}}api/cong-viec/search?keyword=\"\"",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"search"
+					],
+					"query": [
+						{
+							"key": "keyword",
+							"value": "\"\""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all menu công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/cong-viec/lay-menu-loai-cong-viec",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"lay-menu-loai-cong-viec"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all menu công việc theo id chi tiết",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/cong-viec/lay-menu-loai-cong-viec/4",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"lay-menu-loai-cong-viec",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find one theo mã công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/cong-viec/lay-cong-viec-chi-tiet/1",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"lay-cong-viec-chi-tiet",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find all theo tên công việc",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{domain}}api/cong-viec/lay-danh-sach-theo-ten-cong-viec/Thiết kế website giới thiệu công ty",
+					"host": [
+						"{{domain}}api"
+					],
+					"path": [
+						"cong-viec",
+						"lay-danh-sach-theo-ten-cong-viec",
+						"Thiết kế website giới thiệu công ty"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
